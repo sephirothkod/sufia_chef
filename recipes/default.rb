@@ -19,9 +19,11 @@
 
 # Java Backend
 include_recipe 'git'
+include_recipe 'ark::default'
 include_recipe 'imagemagick'
+include_recipe 'database::mysql'
 include_recipe 'sufia::backend'
 include_recipe 'hydra-jetty'
 include_recipe 'sufia::fits'
 include_recipe 'sufia::redis'
-
+include_recipe 'sufia::final'

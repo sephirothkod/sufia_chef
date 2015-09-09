@@ -18,7 +18,7 @@
 #
 
 execute "get rails" do
-  command "gem install rails -v4.2"
+  command "sudo gem install rails -v4.2"
   ignore_failure false
 end
 
@@ -58,7 +58,7 @@ execute "enter sufia" do
 end
 
 execute "bundle install" do
-  command "bundle install"
+  command "sudo bundle install"
   ignore_failure false
 end
 

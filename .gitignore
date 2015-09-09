@@ -1,0 +1,6 @@
+nodes
+*.erb~
+*.rb~
+*.md~
+.gitignore~
+Vagrantfile~

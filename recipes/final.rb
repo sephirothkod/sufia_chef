@@ -19,6 +19,7 @@
 
 template "#{node['sufia']['directory']}/app/models/user.rb" do
   source "user.rb"
+  path "#{node['sufia']['directory']}/app/models/user.rb"
   owner node['user']['name']}
   group node['user']['name']}
   made 755
@@ -26,6 +27,7 @@ end
 
 template "#{node['sufia']['directory']}/user_setup.rb" do
   source "user_setup.rb"
+  path "#{node['sufia']['directory']}/user_setup.rb"
   owner node['user']['name']}
   group node['user']['name']}
   made 755
