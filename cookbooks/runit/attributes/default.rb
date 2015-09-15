@@ -1,4 +1,8 @@
-# Copyright 2015, University of Victoria Library, sephirothkod
+#
+# Cookbook Name:: runit
+# Attribute File:: sv_bin
+#
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,17 +15,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-name             'sufia-hydra'
-maintainer       'B Justice'
-maintainer_email 'bjustice@uvic.ca'
-license          "Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>"
-description      'Installs/Configures Sufia'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '6.3.0'
-
-# Use specific versions of recipes because upstream versions have bugs
-
-depends		 'ark'
-depends          'git'
-depends		 'imagemagick'
+case platform
+when "ubuntu","debian"
+  set[:runit][:sv_bin] = "/usr/bin/sv"
+  set[:runit][:chpst_bin] = "/usr/bin/chpst"
+  set[:runit][:service_dir] = "/etc/service"
+  set[:runit][:sv_dir] = "/etc/sv"
+when "gentoo"
+  set[:runit][:sv_bin] = "/usr/bin/sv"
+  set[:runit][:chpst_bin] = "/usr/bin/chpst"
+  set[:runit][:service_dir] = "/etc/service"
+  set[:runit][:sv_dir] = "/var/service"
+end

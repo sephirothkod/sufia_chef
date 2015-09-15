@@ -13,8 +13,8 @@
 # limitations under the License.
 
 #default user
-default['user']['name'] = 'vagrant'
-default['user']['pass'] = 'vagrant'
+default['user']['name'] = 'hydra'
+default['user']['pass'] = 'hydra'
 default['user']['dir'] = "/home/#{node['user']['name']}"
 
 # Java defaults
@@ -91,7 +91,8 @@ default['tesseract_engdata']['installpath'] = '/usr/local/share/tessdata'
 # FFmpeg specific
 default['ffmpeg']['sha256'] = '3385f7e0d2aa1f57049ecf8a2f6f88f302141b442d895c89b7565b16b8835969'
 default['ffmpeg']['version'] = '1.1.4'
-default['ffmpeg']['installpath'] = '/usr/local/ffmpeg-1.1.4'
+default['ffmpeg']['downloadpath'] = '/usr/local/ffmpeg-1.1.4'
+default['ffmpeg']['installpath'] = '/usr/local/ffmpeg-1.1.4/ffmpeg-1.1.4'
 default['ffmpeg']['binarypath'] = '/usr/local/bin/ffmpeg'
 
 # Audio collection specific

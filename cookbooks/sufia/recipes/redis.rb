@@ -36,5 +36,12 @@ execute "unpack redis" do
   ignore_failure false
 end
 
+execute "change redis owner" do
+  command "sudo chown -R #{node['user']['name']}:#{node['user']['name']} #{node['user']['dir']}/redis/redis-#{node['redis']['version']}"
+  ignore_failure false
+end
 
-
+execute "change redis permissions" do
+  command "sudo chmod -R 766 #{node['user']['dir']}/redis/redis-#{node['redis']['version']}"
+  ignore_failure false
+end

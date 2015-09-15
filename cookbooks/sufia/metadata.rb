@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name             'sufia-hydra'
+name             'sufia'
 maintainer       'B Justice'
 maintainer_email 'bjustice@uvic.ca'
 license          "Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>"
@@ -22,6 +22,6 @@ version          '6.3.0'
 
 # Use specific versions of recipes because upstream versions have bugs
 
-depends		 'ark'
 depends          'git'
-depends		 'imagemagick'
+depends          'ark'
+depends          'imagemagick'

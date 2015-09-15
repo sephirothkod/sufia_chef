@@ -18,7 +18,7 @@
 #
 
 execute "#{node['sufia']['directory']}/app/models/user.rb" do
-  command "cp /#{node['user']['name']}/cookbooks/sufia/files/user.rb.temp #{node['sufia']['directory']}/app/models/user.rb"
+  command "cp /#{node['user']['name']}/cookbooks/sufia/files/user.rb #{node['sufia']['directory']}/app/models/"
 end
 
 file "#{node['sufia']['directory']}/app/models/user.rb" do
@@ -29,7 +29,7 @@ file "#{node['sufia']['directory']}/app/models/user.rb" do
 end
 
 execute "#{node['sufia']['directory']}/user_setup.rb" do
-  command "cp /#{node['user']['name']}/cookbooks/sufia/files/user_setup.rb.temp #{node['sufia']['directory']}/app/models/user_setup.rb"
+  command "cp /#{node['user']['name']}/cookbooks/sufia/files/user_setup.rb #{node['sufia']['directory']}/"
 end
 
 file "#{node['sufia']['directory']}/user_setup.rb" do
@@ -39,7 +39,7 @@ file "#{node['sufia']['directory']}/user_setup.rb" do
   action :touch
 end
 
-execute "setup user file" do
-  command "rails runner #{node['sufia']['directory']}/user_setup.rb #{node['sufia']['directory']}"
-  ignore_failure false
-end
+#execute "setup user file" do
+#  command "rails runner #{node['sufia']['directory']}/user_setup.rb #{node['sufia']['directory']}"
+#  ignore_failure false
+#end

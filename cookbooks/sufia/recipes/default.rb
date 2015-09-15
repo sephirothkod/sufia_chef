@@ -18,15 +18,10 @@
 #
 
 # First set
-include_recipe 'ubuntu-baseline'
 include_recipe 'git'
 include_recipe 'ark::default'
 include_recipe 'imagemagick'
+include_recipe 'sufia::fits'
+include_recipe 'sufia::redis'
 include_recipe 'sufia::backend'
-
-# Second set
-#include_recipe 'sufia::fits'
-#include_recipe 'sufia::redis'
-
-# Last set
-#include_recipe 'sufia::final'
+include_recipe 'sufia::ffmpeg'

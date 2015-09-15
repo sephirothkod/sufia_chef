@@ -20,36 +20,45 @@ bash "create headless install settings for mysql" do
   code <<-EOH 
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password rootpass'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password rootpass'
+sudo debconf-set-selections <<< 'oracle-java8-installer shared/accepted-oracle-license-v1-1 select true'
    EOH
 end
 
-execute "install mysql" do
-  command "sudo apt-get -q -y install mysql-server-5.5 libmysqlclient-dev"
+
+execute "install SQLite3" do
+  command "sudo apt-get -q -y install sqlite3"
   ignore_failure false
 end
 
-bash "create databases" do
-  code <<-EOH
-    mysql -u root -prootpass -e "create database uvic_sufia_development"
-    mysql -u root -prootpass -e "create database uvic_sufia_test"
-    mysql -u root -prootpass -e "create database uvic_sufia_production"
-    EOH
-end
 
-bash "create user" do
-  code <<-EOH
-    mysql -u root -prootpass -e "create user fedoraAdmin@localhost identified by 'fedoraAdmin';"
-    EOH
-end
 
-bash "grant permissions" do
-  code <<-EOH
-    mysql -u root -prootpass -e "grant all on uvic_sufia_development.* to fedoraAdmin@localhost;"
-    mysql -u root -prootpass -e "grant all on uvic_sufia_test.* to fedoraAdmin@localhost;"
-    mysql -u root -prootpass -e "grant all on uvic_sufia_production.* to fedoraAdmin@localhost;"
-    mysql -u root -prootpass -e "flush privileges;"
-    EOH
-end
+#execute "install mysql" do
+#  command "sudo apt-get -q -y install mysql-server-5.5 libmysqlclient-dev"
+#  ignore_failure false
+#end
+#
+#bash "create databases" do
+#  code <<-EOH
+#    mysql -u root -prootpass -e "create database uvic_sufia_development"
+#    mysql -u root -prootpass -e "create database uvic_sufia_test"
+#    mysql -u root -prootpass -e "create database uvic_sufia_production"
+#    EOH
+#end
+#
+#bash "create user" do
+#  code <<-EOH
+#    mysql -u root -prootpass -e "create user fedoraAdmin@localhost identified by 'fedoraAdmin';"
+#    EOH
+#end
+#
+#bash "grant permissions" do
+#  code <<-EOH
+#    mysql -u root -prootpass -e "grant all on uvic_sufia_development.* to fedoraAdmin@localhost;"
+#    mysql -u root -prootpass -e "grant all on uvic_sufia_test.* to fedoraAdmin@localhost;"
+#    mysql -u root -prootpass -e "grant all on uvic_sufia_production.* to fedoraAdmin@localhost;"
+#    mysql -u root -prootpass -e "flush privileges;"
+#    EOH
+#end
 
 execute "common properties" do
   command "sudo apt-get -q -y install software-properties-common"
@@ -76,7 +85,7 @@ execute "update" do
   ignore_failure false
 end
 
-execute "get java" do
+execute "install java" do
   command "sudo apt-get -q -y install oracle-java8-installer"
   ignore_failure false
 end
@@ -134,43 +143,43 @@ end
 template "replace Gemfile" do
   source "Gemfile"
   path "#{node['sufia']['directory']}/Gemfile"
-  mode "0644"
+  mode "0666"
 end
 
 file "#{node['sufia']['directory']}/Gemfile.lock" do
   content " "
-  mode 644
   owner node['user']['name']
   group node['user']['name']
+  mode "0666"
 end
 
 file "#{node['sufia']['directory']}/log/development.log" do
   content " "
-  mode 644
   owner node['user']['name']
   group node['user']['name']
+  mode "0666"
   action :create_if_missing
-end
+end 
 
 # Generate templated database.yml
 template "template database.yml" do
   source "database.yml.erb"
   path "#{node['sufia']['directory']}/config/database.yml"
-  mode "0644"
+  mode "0666"
 end
 
 # Generate templated fedora.yml
-template "template fedora.yml" do
-  source "fedora.yml.erb"
-  path "#{node['sufia']['directory']}/config/fedora.yml"
-  mode "0644"
-end
+#template "template fedora.yml" do
+#  source "fedora.yml.erb"
+#  path "#{node['sufia']['directory']}/config/fedora.yml"
+#  mode "0666"
+#end
 
 # Generate templated solr.yml
 template "template solr.yml" do
   source "solr.yml.erb"
   path "#{node['sufia']['directory']}/config/solr.yml"
-  mode "0644"
+  mode "0666"
 end
 
 execute "install bundler" do

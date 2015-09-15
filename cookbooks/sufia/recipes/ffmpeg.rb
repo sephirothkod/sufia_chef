@@ -25,23 +25,31 @@ execute "sudo sed -i '/^# deb.*multiverse/ s/^# //' /etc/apt/sources.list && sud
 end
 
 # install requirements
-execute "sudo apt-get install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev yasm libx264-dev libmp3lame-dev unzip x264 libgsm1-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenjpeg-dev libschroedinger-dev libspeex-dev libvpx-dev libxvidcore-dev libdc1394-22-dev -y --force-yes" do
+execute "sudo apt-get install autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev yasm libfdk-aac-dev libx264-dev libmp3lame-dev unzip x264 libgsm1-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenjpeg-dev libschroedinger-dev libspeex-dev libvpx-dev libxvidcore-dev libdc1394-22-dev -y --force-yes" do
   environment ({'DEBIAN_FRONTEND' => 'noninteractive'})
   ignore_failure false
 end
 
+directory "#{node['ffmpeg']['installpath']}" do
+  action :create
+  owner node['user']['name']
+  group node['user']['name']
+end
+
 # download FFmpeg source
-ark 'ffmpeg' do
-  url "http://www.ffmpeg.org/releases/ffmpeg-#{node['ffmpeg']['version']}.tar.gz"
-  version node['ffmpeg']['version']
+remote_file "#{node['ffmpeg']['downloadpath']}/ffmpeg-#{node['ffmpeg']['version']}.tar.gz" do
+  source "http://www.ffmpeg.org/releases/ffmpeg-#{node['ffmpeg']['version']}.tar.gz"
   checksum node['ffmpeg']['sha256']
-  home_dir node['ffmpeg']['install_path']
+end
+
+execute "extract ffmpeg" do
+  command "tar xzvf #{node['ffmpeg']['downloadpath']}/ffmpeg-#{node['ffmpeg']['version']}.tar.gz -C #{node['ffmpeg']['downloadpath']}"
 end
 
 # run make commands on FFmpeg source to build it
 execute "ffmpeg build from source" do
   environment ({'DEBIAN_FRONTEND' => 'noninteractive'})
-  command "cd #{node['ffmpeg']['installpath']} && sudo ./configure --enable-gpl --enable-version3 --enable-nonfree --enable-postproc --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libdc1394 --enable-libfaac --enable-libgsm --enable-libmp3lame --enable-libopenjpeg --enable-libschroedinger --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libxvid && sudo make && sudo make install && sudo ldconfig"
+  command "cd #{node['ffmpeg']['installpath']} && sudo ./configure --enable-gpl --enable-version3 --enable-nonfree --enable-postproc --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libdc1394 --enable-libfaac --enable-libgsm --enable-libmp3lame --enable-libopenjpeg --enable-libschroedinger --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libfdk-aac --enable-libxvid && sudo make && sudo make install && sudo ldconfig"
   creates "/usr/local/bin/ffmpeg"
   ignore_failure false
 end

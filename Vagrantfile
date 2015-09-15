@@ -16,7 +16,8 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 3306, host: 3307    # MySQL
   config.vm.network :forwarded_port, guest: 5432, host: 5432    # PostgreSQL
   config.vm.network :forwarded_port, guest: 80,   host: 8181    # Apache
-  config.vm.network :forwarded_port, guest: 3000,   host: 3001    # Apache
+  config.vm.network :forwarded_port, guest: 3000,   host: 3001    # Rails
+  config.vm.network :forwarded_port, guest: 8983,   host: 8983    # Jetty
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", '3000']
@@ -42,6 +43,7 @@ Vagrant.configure("2") do |config|
     chef.json = {
      
     }
+    chef.add_recipe 'ubuntu-baseline'
     chef.add_recipe 'sufia'
   end
 end
